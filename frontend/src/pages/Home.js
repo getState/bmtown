@@ -1,10 +1,9 @@
 import React from "react";
+import LoginContainer from "../components/LoginContainer";
 
 const Home = () => {
   return (
-    <div>
-      <h2>홈</h2>
-    </div>
+    <LoginContainer></LoginContainer>
   );
 };
 
