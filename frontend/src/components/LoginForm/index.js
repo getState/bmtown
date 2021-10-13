@@ -9,13 +9,14 @@ export default function LoginForm(){
             <Input
                 type="text"
                 placeholder="아이디를 입력하세요."
+                required
             />
             
             <LoginButton>
                 로그인
             </LoginButton>
 
-            <SignupButton>
+            <SignupButton to="/register">
                 회원가입
             </SignupButton>
         </Form>
