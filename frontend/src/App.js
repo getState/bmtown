@@ -6,7 +6,7 @@ import './reset.css';
 export default function App(){
   return (
       <BrowserRouter>
-        <Route exact path={["/", "/register"]} component={Home} />
+        <Route exact path={["/", "/auth/callback"]} component={Home} />
         <Route path="/town" component={Town} />
       </BrowserRouter>
     );

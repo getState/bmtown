@@ -56,6 +56,6 @@ const ButtonCommon = (bgColor) =>`
 export const LoginButton = styled.button`
   ${ButtonCommon("#045D8B")}
 `;
-export const SignupButton = styled(Link)`
+export const SignupButton = styled.a`
   ${ButtonCommon("grey")}
 `;

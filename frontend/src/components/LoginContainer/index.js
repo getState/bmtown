@@ -12,7 +12,7 @@ export default function LoginContainer(){
                 <LogoImg src="logo.png" />
             </LogoLink>
             <Route exact path="/" component={LoginForm}></Route>
-            <Route exact path="/register" component={RegisterForm}></Route>
+            <Route exact path="/auth/callback" component={RegisterForm}></Route>
         </Container>
     );
 }

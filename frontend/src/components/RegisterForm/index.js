@@ -1,8 +1,28 @@
 import React from "react";
 import { Button, Form, InputId, InputNick, Label, Text } from "./style";
+import { useLocation } from 'react-router-dom';
+import axios from 'axios';
+import { useState, useEffect } from "react";
 
 
-export default function RegisterForm(){
+export default function RegisterForm() {
+    const [accessToken, setAccessToken] = useState(undefined);
+
+    const searchParams = new URLSearchParams(useLocation().search);
+    const code = searchParams.get("code");
+
+    const getAccessToken = async (code) => {
+        const { data } = await axios.post("http://127.0.0.1:5000/auth", { code });
+        const { accessToken, userInfomation } = data;
+        setAccessToken(accessToken);
+        console.log(accessToken);
+    }
+
+
+    useEffect(() => {
+        getAccessToken(code);
+    },[])
+
     return (
         <Form>
             <Label>
