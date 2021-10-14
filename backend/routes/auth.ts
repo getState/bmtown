@@ -1,5 +1,4 @@
 const express = require('express');
-const axios = require("axios");
 const authRouter = express.Router();
 import { getAccessToken,getGitInfo } from "../auth/gitOAuth";
 
