@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 import { Document, model, Model, Schema } from 'mongoose';
 
 const userSchema: Schema = new Schema({
-    username: {
+    userId: {
         type: String,
         required: true,
         unique: 1
@@ -12,7 +12,7 @@ const userSchema: Schema = new Schema({
         required: true,
         trim: true,
     },
-    accessToken: {
+    githubId: {
         type: String,
         required: true,
         trim: true
