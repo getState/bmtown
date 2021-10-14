@@ -1,5 +1,5 @@
-import randToken from 'rand-token';
-import jwt from 'jsonwebtoken';
+const randToken  = require('rand-token');
+const jwt  =require( 'jsonwebtoken');
 import secretKey from './secret_key';
 
 const TOKEN_EXPIRED = -3;
@@ -7,11 +7,11 @@ const TOKEN_INVALID = -2;
 
 export default function jwtToken() {
     return {
-        sign: async (user) => {
+        sign: async (userInfo) => {
             /* 현재는 idx와 email을 payload로 넣었지만 필요한 값을 넣으면 됨! */
             const payload = {
-                idx: user.userIdx,
-                email: user.email,
+                id: userInfo.userId,
+                nickname: userInfo.nickname,
             };
             const result = {
                 //sign메소드를 통해 access token 발급!
