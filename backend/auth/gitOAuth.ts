@@ -16,7 +16,7 @@ export async function getAccessToken(code) {
 export async function getGitInfo(accessToken) {
     const USER_PROFILE_URL = 'https://api.github.com/user';
 
-    const { data: userInformation } = await axios.get(USER_PROFILE_URL, {
+    const { data : userInformation } :any = await axios.get(USER_PROFILE_URL, {
         headers: {
             Authorization: `token ${accessToken}`
         }
