@@ -1,7 +1,8 @@
 import React from 'react';
 import { useState, useEffect } from "react";
 import axios from 'axios';
-import { Form, Input, LoginButton, SignupButton} from './style';
+import { Div, Input, LoginButton, SignupButton} from './style';
+import { Modal } from '../Modal';
   
 
 export default function LoginForm() {
@@ -10,9 +11,10 @@ export default function LoginForm() {
     const url = `https://github.com/login/oauth/authorize?client_id=${cliendId}&redirect_url=${callbackURL}`;
 
     const [userId, setUserId] = useState('');
+    const [loginFail, setLoginFail] = useState(false);
 
     return (
-        <div>
+        <Div>
             <Input
                 type="text"
                 placeholder="아이디를 입력하세요."
@@ -21,7 +23,10 @@ export default function LoginForm() {
             />
             
             <LoginButton
-                onClick={()=>{doLogin(userId)}}
+                onClick={async () => {
+                    const result=await doLogin(userId)
+                    setLoginFail(!result)
+                }}
             >
                 로그인
             </LoginButton>
@@ -29,7 +34,14 @@ export default function LoginForm() {
             <SignupButton href={url}>
                 회원가입
             </SignupButton>
-        </div>
+
+            <Modal
+                message="존재하지 않는 ID입니다."
+                visible={loginFail}
+                callback={() => { setLoginFail(false) }}
+            />
+            
+        </Div>
     );
 }
 
@@ -37,9 +49,10 @@ const doLogin =async  (userId) => {
     const { userInfo, token } = (await axios.get(`http://127.0.0.1:5000/user/?userId=${userId}`)).data;
      
     if (userInfo !== null) {
-        console.log("로그인 성공!");
+        window.location.href = "/town";
+        return true;
     }
     else {
-        console.log("로그인 실패!");
+        return false;
     }
 }
