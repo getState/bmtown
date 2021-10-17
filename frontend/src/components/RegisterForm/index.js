@@ -1,14 +1,17 @@
 import React from "react";
-import { Button, Form, InputId, InputNick, Label, Text } from "./style";
+import { Button, Div, InputId, InputNick, Label, Text } from "./style";
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { useState, useEffect } from "react";
+import { Modal } from "../Modal";
 
 
 export default function RegisterForm() {
     const [accessToken, setAccessToken] = useState(undefined);
     const [userId, setUserId] = useState('');
     const [nickname, setNickname] = useState('');
+    const [regSuccess, setregSuccess] = useState(false);
+    const [regFail, setregFail] = useState(false);
 
     const searchParams = new URLSearchParams(useLocation().search);
     const code = searchParams.get("code");
@@ -23,7 +26,7 @@ export default function RegisterForm() {
     }, [])
 
     return (
-        <div>
+        <Div>
             <Label>
                 <Text>
                     아이디
@@ -49,11 +52,30 @@ export default function RegisterForm() {
                 </InputNick>
             </Label>
             <Button
-                onClick={() => doRegister(accessToken, userId, nickname)}
+                onClick={async () =>{
+                    const result=await doRegister(accessToken, userId, nickname)
+                    setregSuccess(result)
+                    setregFail(!result)
+                }}
             >
                 회원가입
             </Button>
-        </div>
+
+            <Modal
+                message='회원가입 완료!'
+                visible={regSuccess}
+                callback={() => { window.location.href = "/" }}
+            />
+            
+            <Modal
+                message="이미 존재하는 id이거나 이미 회원가입된 계정입니다."
+                visible={regFail}
+                callback={()=>{setregFail(false)}}
+            />
+            
+
+            
+        </Div>
     );
 }
 
@@ -61,11 +83,10 @@ export default function RegisterForm() {
 
 const doRegister = async (accessToken, userId, nickname) => {
     const { result } = (await axios.post("http://127.0.0.1:5000/user", { accessToken, userId, nickname })).data;
-    console.log(result);
     if (result) {
-        window.location.href = "/";
+        return true;
     }
     else {
-        alert("이미 존재하는 id이거나 이미 회원가입된 계정입니다.");
+        return false;
     }
 }
