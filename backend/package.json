@@ -17,6 +17,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.0.10",
     "rand-token": "^1.0.1",
+    "socket.io": "^4.3.0",
     "source-map-support": "^0.5.20"
   },
   "devDependencies": {
