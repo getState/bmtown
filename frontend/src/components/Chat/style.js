@@ -32,14 +32,8 @@ export const BackButton = styled.button`
     cursor: pointer;
 `
 
-export const MessageContainer = styled.div`
-    flex-grow: 1;
-`
 
-export const Message = styled.div`
-    margin-top: 10px;
-    background-color: #333a64;
-`
+
 
 export const ChatInput = styled.input`
     width: 100%;
@@ -47,4 +41,28 @@ export const ChatInput = styled.input`
     border: 1px solid #333a64;
     border-radius: 20px;
     background-color: 242544;
+`
+
+export const MessageContainer = styled.div`
+    flex-grow: 1;
+    overflow: scroll;
+`
+
+export const Message = styled.div`
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    background-color: #333a64;
+`
+
+export const MessageSender = styled.div`
+    position: relative;
+    width: 100%;
+    height: 30px;
+`
+
+export const MessageContent = styled.div`
+    position: relative;
+    width: 100%;
+    height: 30px;
 `

@@ -1,26 +1,26 @@
 import React, { useState } from 'react';
-import { useRecoilValue } from 'recoil';
-import { useChat } from '../../hooks/useChat';
+import { useRecoilValue, useRecoilState } from 'recoil';
 import { userAtom } from '../../store/user';
-import { BackButton, ChatHead, ChatInput, Container, HeadText, Message, MessageContainer } from './style';
-
+import { chatList } from '../../store/chat';
+import { BackButton, ChatHead, ChatInput, Container, HeadText, MessageContainer } from './style';
+import { useSocket } from '../../hooks/useSocket';
+import { MessageDetail } from '../ChatMessage';
 
 export default function Chat() {
     const user = useRecoilValue(userAtom);
+    const [messageList,setMessageList] = useRecoilState(chatList);
     const [message, setMessage] = useState("")
-    const [messageList, setMessageList] = useState([]);
-
-
-    const sendMessage = useChat((msg) => {
-        console.log("msg받음", msg);
-        setMessageList([...messageList,msg])
+    
+    
+    const sendMessage = useSocket((msg) => {
+        setMessageList(messageList => messageList.concat(msg));
     })
+    
 
     const submitHandler = (event) => {
         if (event.key === 'Enter'){
-            console.log("enter누름");
-            console.log(user);
-            sendMessage({user ,message, type: "msg"});
+            sendMessage({ user, message, type: "msg" });
+            setMessage("");
         }
     }
 
@@ -30,11 +30,18 @@ export default function Chat() {
                 <HeadText>Chat</HeadText>
                 <BackButton>&lt;</BackButton>
             </ChatHead>
-            <MessageContainer>
-                <Message>
 
-                </Message>
+            <MessageContainer>
+                {messageList.map((message, index) => (
+                    <MessageDetail
+                        key={index}
+                        nickname={message.user.nickname}
+                        message={message.message}
+                    />
+                ))
+                }
             </MessageContainer>
+
             <ChatInput 
                 placeholder="Message..."
                 value = {message}
@@ -44,4 +51,3 @@ export default function Chat() {
         </Container>
     );
 }
-
