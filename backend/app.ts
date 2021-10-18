@@ -1,8 +1,11 @@
 import * as express from "express"
+import * as http from "http";
+import { Server } from "socket.io";
 import { connect } from "./db";
 import { User } from "./models/User";
 import authRouter from "./routes/auth";
 import userRouter from "./routes/user";
+import {liveStart} from "./routes/live";
 const cors=require("cors");
 
 connect();
@@ -21,6 +24,7 @@ class App {
 
 const app = new App().application;
 
+
 app.use(express.json());
 app.use(cors(corsOption));
 
@@ -28,4 +32,16 @@ app.use(cors(corsOption));
 app.use("/user", userRouter);
 app.use("/auth", authRouter);
 
-app.listen(5000,()=>console.log("start"));
+
+
+
+// 소켓 연결을 위한 http 서버 생성
+const server = require("http").Server(app);
+let io = require('socket.io')(server, {
+  requestCert: true,
+  secure: true,
+  rejectUnauthorized: false,
+  transports: ['websocket']
+});
+liveStart(io);
+server.listen(5000,()=>console.log("start"));

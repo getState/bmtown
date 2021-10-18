@@ -1,10 +1,9 @@
 import React from "react";
+import Chat from "../components/Chat";
 
 const Town = () => {
   return (
-    <div>
-      <h2>Town</h2>
-    </div>
+    <Chat />
   );
 };
 
