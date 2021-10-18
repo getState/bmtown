@@ -1,8 +1,10 @@
-import React from 'react';
-import { useState, useEffect } from "react";
-import axios from 'axios';
+import React,{ useState, useEffect } from 'react';
+import { useHistory } from 'react-router';
+import {useRecoilState} from 'recoil';
+import { fetchLogin } from "../../hooks/useLogin";
 import { Div, Input, LoginButton, SignupButton} from './style';
 import { Modal } from '../Modal';
+import { userAtom } from '../../store/user';
   
 
 export default function LoginForm() {
@@ -10,8 +12,11 @@ export default function LoginForm() {
     const callbackURL = `http://127.0.0.1:3000/auth/callback`;
     const url = `https://github.com/login/oauth/authorize?client_id=${cliendId}&redirect_url=${callbackURL}`;
 
+    const history = useHistory();
+    
     const [userId, setUserId] = useState('');
     const [loginFail, setLoginFail] = useState(false);
+    const [user, setUser] = useRecoilState(userAtom);
 
     return (
         <Div>
@@ -24,7 +29,7 @@ export default function LoginForm() {
             
             <LoginButton
                 onClick={async () => {
-                    const result=await doLogin(userId)
+                    const result=await fetchLogin(userId,setUser, history)
                     setLoginFail(!result)
                 }}
             >
@@ -40,19 +45,7 @@ export default function LoginForm() {
                 visible={loginFail}
                 callback={() => { setLoginFail(false) }}
             />
-            
         </Div>
     );
 }
 
-const doLogin =async  (userId) => {
-    const { userInfo, token } = (await axios.get(`http://127.0.0.1:5000/user/?userId=${userId}`)).data;
-     
-    if (userInfo !== null) {
-        window.location.href = "/town";
-        return true;
-    }
-    else {
-        return false;
-    }
-}

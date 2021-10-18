@@ -17,7 +17,17 @@ export const useChat = (respondCallback) => {
         socketRef.current.on("connect", () => {
             console.log("server connected");
         })
+
+        socketRef.current.on('disconnect', () => {
+            socketRef.current.removeAllListeners();
+            console.log("server disconnected");
+        });
+
         socketRef.current.on("respondMessage", respondCallback);
+
+        return () => {
+             socketRef.current.disconnect();
+        }
     }, []);
     const sendMessage = (data) => {
         socketRef.current.emit("sendMessage", data);

@@ -1,8 +1,9 @@
 import React from "react";
 import { Button, Div, InputId, InputNick, Label, Text } from "./style";
 import { useLocation } from 'react-router-dom';
-import axios from 'axios';
 import { useState, useEffect } from "react";
+import { fetchRegister } from "../../hooks/useRegister";
+import axios from 'axios';
 import { Modal } from "../Modal";
 
 
@@ -21,6 +22,7 @@ export default function RegisterForm() {
         const { accessToken, userInfomation } = data;
         setAccessToken(accessToken);
     }
+
     useEffect(() => {
         getAccessToken(code);
     }, [])
@@ -53,7 +55,7 @@ export default function RegisterForm() {
             </Label>
             <Button
                 onClick={async () =>{
-                    const result=await doRegister(accessToken, userId, nickname)
+                    const result=await fetchRegister(accessToken, userId, nickname)
                     setregSuccess(result)
                     setregFail(!result)
                 }}
@@ -72,21 +74,7 @@ export default function RegisterForm() {
                 visible={regFail}
                 callback={()=>{setregFail(false)}}
             />
-            
-
-            
+                  
         </Div>
     );
-}
-
-
-
-const doRegister = async (accessToken, userId, nickname) => {
-    const { result } = (await axios.post("http://127.0.0.1:5000/user", { accessToken, userId, nickname })).data;
-    if (result) {
-        return true;
-    }
-    else {
-        return false;
-    }
 }
