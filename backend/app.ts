@@ -5,7 +5,9 @@ import { connect } from "./db";
 import { User } from "./models/User";
 import authRouter from "./routes/auth";
 import userRouter from "./routes/user";
-import {liveStart} from "./routes/live";
+import { liveStart } from "./routes/live";
+import * as cookieParser from "cookie-parser";
+
 const cors=require("cors");
 
 connect();
@@ -27,7 +29,7 @@ const app = new App().application;
 
 app.use(express.json());
 app.use(cors(corsOption));
-
+app.use(cookieParser());
 
 app.use("/user", userRouter);
 app.use("/auth", authRouter);
