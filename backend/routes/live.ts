@@ -13,7 +13,7 @@ export const liveStart = (io) => {
 
         socket.on('sendMessage', (msg) => {
             console.log(msg);
-            const data = {id : socket.id, msg};
+            const data = { id: socket.id, msg };
             io.emit('respondMessage', msg);
         })
 
