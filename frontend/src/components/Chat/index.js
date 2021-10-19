@@ -13,7 +13,8 @@ export default function Chat() {
     
     
     const sendMessage = useSocket((msg) => {
-        setMessageList(messageList => messageList.concat(msg));
+        if(msg.type==="msg")
+            setMessageList(messageList => messageList.concat(msg));
     })
     
 
