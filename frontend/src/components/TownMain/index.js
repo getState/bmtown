@@ -1,28 +1,9 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef, useEffect } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil';
-import styled from 'styled-components';
-import { useSocket } from '../../hooks/useSocket';
 import { myLocation, otherLocations } from '../../store/locations';
 import { userAtom } from '../../store/user';
-
-const direction = {
-    "down": 32,
-    "left": 128,
-    "right": 320,
-    "up": 224
-}
-const Div = styled.div`
-    height: 100vh;
-    max-height: 100vh;
-    flex-grow: 1;
-    display: block;
-`;
-const Canvas = styled.canvas`
-  display: block;
-  width: 100%;
-  height: 100%;
-`
-
+import { Canvas, Div } from './style';
+import { drawMyAvatar, drawOtherAvatars, Interval, isCollision } from './utils';
 
 
 export default function TownMain(props) {
@@ -30,11 +11,9 @@ export default function TownMain(props) {
     const [location, setLocation] = useRecoilState(myLocation);
     const [otherLocation,setOtherLocation] = useRecoilState(otherLocations);
     const user = useRecoilValue(userAtom);
-
+    
     const mapImg = new Image();
-    const characterImg = new Image();
     mapImg.src = "/map.png";
-    characterImg.src = "/avatar.png";
     
     const draw = (canvas, ctx, frameCount) => {
         const width = canvas.width;
@@ -44,14 +23,11 @@ export default function TownMain(props) {
         // 컨텍스트 리셋
         ctx.beginPath();
         //draw map
-        ctx.drawImage(mapImg, location.x - width / 8 + 32, location.y - height / 8, width / 4, height / 4, 0, 0, width, height);
-        //draw my character
-        ctx.drawImage(characterImg, direction[location.direction] + 32 * location.toggle, 0, 32, 64, width / 2 - 64, height / 2, 32, 64);
+        ctx.drawImage(mapImg, location.x, location.y, width, height, 0, 0, width, height);
         //draw other character
-        Object.keys(otherLocation).forEach((nickname) => {
-            const others = otherLocation[nickname];
-            ctx.drawImage(characterImg, direction[others.direction] + 32 * others.toggle, 0, 32, 64, others.x - location.x + width / 2 - 64, others.y - location.y + height / 2, 32, 64);
-        })
+        drawOtherAvatars(canvas, ctx,otherLocation, location, user);
+        //draw my character
+        drawMyAvatar(canvas, ctx,location, user);
     }
     
     const sendLocation = props.sendSocket;
@@ -59,21 +35,21 @@ export default function TownMain(props) {
     const move = (event) => {
         const toggle = location.toggle;
 
-        if (event.key == "ArrowDown") 
-            setLocation({ x: location.x, y: location.y + 2 , direction: "down", toggle:(toggle+1)%2});
-        else if (event.key == "ArrowUp") 
-            setLocation({ x: location.x, y: location.y - 2 , direction: "up", toggle:(toggle+1)%2});
-        else if (event.key == "ArrowRight") 
-            setLocation({ x: location.x + 2, y: location.y , direction: "right", toggle:(toggle+1)%2});
-        else if (event.key == "ArrowLeft") 
-            setLocation({ x: location.x - 2, y: location.y , direction: "left", toggle:(toggle+1)%2});
+        if (event.key === "ArrowDown" && !isCollision(user,{x:location.x, y:location.y+4},otherLocation)) 
+            setLocation({ x: location.x, y: location.y + 2 , direction: "down", avatar: location.avatar,toggle:(toggle+1)%Interval});
+        else if (event.key === "ArrowUp"&& !isCollision(user,{x:location.x, y:location.y-4},otherLocation)) 
+            setLocation({ x: location.x, y: location.y - 2 , direction: "up", avatar: location.avatar,toggle:(toggle+1)%Interval});
+        else if (event.key === "ArrowRight"&& !isCollision(user,{x:location.x+4, y:location.y},otherLocation)) 
+            setLocation({ x: location.x + 2, y: location.y , direction: "right", avatar: location.avatar,toggle:(toggle+1)%Interval});
+        else if (event.key === "ArrowLeft"&& !isCollision(user,{x:location.x-4, y:location.y},otherLocation)) 
+            setLocation({ x: location.x - 2, y: location.y , direction: "left", avatar: location.avatar,toggle:(toggle+1)%Interval});
 
-        sendLocation({ nickname: user.nickname, x: location.x, y: location.y, direction: location.direction, toggle: location.toggle, type: "move" });
+        sendLocation({ nickname: user.nickname,  type: "move" ,...location});
         document.addEventListener("keyup",stopMove,{once: true})
     }
     
     const stopMove = () => {
-        setLocation({ x: location.x, y: location.y , direction: location.direction, toggle:-1});
+        setLocation({ x: location.x, y: location.y , direction: location.direction, avatar: location.avatar,toggle:-Interval/2});
     }
 
     useEffect(() => {
@@ -101,12 +77,10 @@ export default function TownMain(props) {
     return (
         <Div>
             <Canvas
-                // width={window.innerWidth}
-                // height={window.innerHeight-1}
+                width={window.innerWidth}
+                height={window.innerHeight}
                 ref={canvasRef}
             />
-        </Div>
-    
-            
+        </Div>        
     )
 }

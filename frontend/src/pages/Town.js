@@ -15,12 +15,10 @@ const Town = () => {
   const [otherLocation,setOtherLocation] = useRecoilState(otherLocations);
   const sendSocket = useSocket((msg) => {
     if (msg.type === "msg") {
-        setMessageList(messageList => messageList.concat(msg));
+      setMessageList(messageList => messageList.concat(msg));
     }
     else if (msg.type === "move") {
-        const newOtherLocation = Object.create(otherLocation);
-        newOtherLocation[msg.nickname] = msg;
-        setOtherLocation(newOtherLocation);
+      setOtherLocation(otherLocation=> otherLocation.set(msg.nickname, msg));
     }
   })
 
