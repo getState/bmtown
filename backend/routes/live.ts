@@ -1,5 +1,3 @@
-
-
 let users = {};
 let socketToRoom = {};
 let count = 0;
