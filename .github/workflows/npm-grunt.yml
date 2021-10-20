@@ -24,6 +24,7 @@ jobs:
       run: |
         cd backend
         npm install
+        npm install nodemon -g --save
         
     - name: Start backend
       run: |
