@@ -1,25 +1,21 @@
 import styled from "styled-components";
 
-
-export const MessageContainer = styled.div`
-    flex-grow: 1;
-`
-
 export const Message = styled.div`
     display: flex;
     flex-direction: column;
     margin-top: 10px;
-    background-color: #333a64;
 `
 
-export const MessageSender = styled.div`
-    position: relative;
+export const MessageSender = styled.p`
     width: 100%;
-    height: 30px;
+    font-size: 14px;
+    color: #cad8ff;
 `
 
-export const MessageContent = styled.div`
-    position: relative;
+export const MessageContent = styled.p`
     width: 100%;
-    height: 30px;
+    margin-top: 4px;
+    font-size: 14px;
+    color: white;
+    
 `

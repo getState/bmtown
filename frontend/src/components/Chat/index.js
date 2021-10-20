@@ -1,21 +1,17 @@
 import React, { useState } from 'react';
-import { useRecoilValue, useRecoilState } from 'recoil';
+import { useRecoilValue} from 'recoil';
 import { userAtom } from '../../store/user';
 import { chatList } from '../../store/chat';
 import { BackButton, ChatHead, ChatInput, Container, HeadText, MessageContainer } from './style';
-import { useSocket } from '../../hooks/useSocket';
 import { MessageDetail } from '../ChatMessage';
 
-export default function Chat() {
+export default function Chat(props) {
     const user = useRecoilValue(userAtom);
-    const [messageList,setMessageList] = useRecoilState(chatList);
+    const messageList = useRecoilValue(chatList);
     const [message, setMessage] = useState("")
+    const setSelectedBar = props.setSelectedBar;
+    const sendMessage = props.sendMessage;
     
-    
-    const sendMessage = useSocket((msg) => {
-        if(msg.type==="msg")
-            setMessageList(messageList => messageList.concat(msg));
-    })
     
 
     const submitHandler = (event) => {
@@ -24,12 +20,12 @@ export default function Chat() {
             setMessage("");
         }
     }
-
+    
     return (
         <Container>
             <ChatHead>
                 <HeadText>Chat</HeadText>
-                <BackButton>&lt;</BackButton>
+                <BackButton onClick={() => setSelectedBar("notSelected")}>&lt;</BackButton>
             </ChatHead>
 
             <MessageContainer>

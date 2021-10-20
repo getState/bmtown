@@ -1,23 +1,39 @@
-import styled from "styled-components";
+import styled, {keyframes} from "styled-components";
+
+const slideAnimation = keyframes`
+    from{
+        transform: translateX(-200%);
+    }
+    to{
+        transform: translateX(0);
+    }
+`;
 
 export const Container = styled.div`
     display: flex;
     flex-direction: column;
-    width: 300px;
-    min-width: 200px;
+    flex-grow: 0;
+    width: 200px;
+    min-width: 100px;
     height: 100vh;
     min-height: 300px;
     padding: 5px 10px 10px 10px;
-    background-color: #242544;
+    background-color: rgb(40, 45, 78);
+    animation: ${slideAnimation} 1s;
+
     
 `;
 
 export const ChatHead = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 5px;
 `;
 
 export const HeadText = styled.div`
     float: left;
-    font-size: 20px;
+    font-size: 16px;
     color: white;
     font-weight: 600;
     
@@ -28,7 +44,7 @@ export const BackButton = styled.button`
     font-size: 20px;
     color: white;
     font-weight: 600;
-    background-color: #242544;
+    background-color: rgb(40, 45, 78);
     border: none;
     cursor: pointer;
 `
@@ -38,32 +54,15 @@ export const BackButton = styled.button`
 
 export const ChatInput = styled.input`
     width: 100%;
-    padding: 10px;
-    border: 1px solid #333a64;
+    padding: 5px 10px;
+    border: 2px solid rgba(202,216,255,.6);
     border-radius: 20px;
-    background-color: 242544;
+    background-color: rgb(40, 45, 78);
+    color: #fff;
+    font-size: 16px;
 `
 
 export const MessageContainer = styled.div`
     flex-grow: 1;
-    overflow: scroll;
-`
-
-export const Message = styled.div`
-    display: flex;
-    flex-direction: column;
-    margin-top: 10px;
-    background-color: #333a64;
-`
-
-export const MessageSender = styled.div`
-    position: relative;
-    width: 100%;
-    height: 30px;
-`
-
-export const MessageContent = styled.div`
-    position: relative;
-    width: 100%;
-    height: 30px;
+    overflow-y: auto;
 `
