@@ -10,7 +10,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [12.x, 14.x]
+        node-version: [14.x]
     
     steps:
     - uses: actions/checkout@v2
@@ -26,9 +26,9 @@ jobs:
         npm install
         npm start
         
-    - name: Start backend
+    - name: Start fronted
       run: |
-        cd frontend
+        cd frontend/
         npm install
         npm start
         
