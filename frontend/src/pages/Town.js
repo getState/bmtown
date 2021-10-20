@@ -1,17 +1,33 @@
 import React from "react";
 import styled from "styled-components";
-import Chat from "../components/Chat";
 import TownMain from "../components/TownMain";
-
+import SideContainer from "../components/SideContainer";
+import { useSocket } from "../hooks/useSocket";
+import { useRecoilState } from "recoil";
+import { chatList } from "../store/chat";
+import { otherLocations } from "../store/locations";
 const Div = styled.div`
   display: flex;
   flex-direction: row;
 `
 const Town = () => {
+  const [messageList, setMessageList] = useRecoilState(chatList);
+  const [otherLocation,setOtherLocation] = useRecoilState(otherLocations);
+  const sendSocket = useSocket((msg) => {
+    if (msg.type === "msg") {
+        setMessageList(messageList => messageList.concat(msg));
+    }
+    else if (msg.type === "move") {
+        const newOtherLocation = Object.create(otherLocation);
+        newOtherLocation[msg.nickname] = msg;
+        setOtherLocation(newOtherLocation);
+    }
+  })
+
   return (
     <Div>
-      <Chat/>
-      <TownMain/>
+      <SideContainer sendSocket={sendSocket}/>
+      <TownMain sendSocket={sendSocket}/>
     </Div>
   );
 };
