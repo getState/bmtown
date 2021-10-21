@@ -1,4 +1,5 @@
-import * as express from "express"
+import * as express from "express";
+import 'dotenv/config';
 import * as http from "http";
 import { Server } from "socket.io";
 import { connect } from "./db";
@@ -13,7 +14,7 @@ const cors=require("cors");
 connect();
 
 const corsOption = {
-  origin: ["http://127.0.0.1:3000","http://localhost:3000"],
+  origin: ["http://localhost:3000","http://127.0.0.1:3000","http://101.101.216.132:3000"],
   credentials: true
 }
 
