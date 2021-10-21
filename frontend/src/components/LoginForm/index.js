@@ -1,4 +1,4 @@
-import React,{ useState, useEffect } from 'react';
+import React,{ useState } from 'react';
 import { useHistory } from 'react-router';
 import {useRecoilState} from 'recoil';
 import { fetchLogin } from "../../hooks/useLogin";
@@ -8,8 +8,8 @@ import { userAtom } from '../../store/user';
   
 
 export default function LoginForm() {
-    const cliendId = '0a0df7aa812c963d01ee';
-    const callbackURL = `http://127.0.0.1:3000/auth/callback`;
+    const cliendId = process.env.REACT_APP_CLIENT_ID;
+    const callbackURL = process.env.REACT_APP_CALL_BACK;
     const url = `https://github.com/login/oauth/authorize?client_id=${cliendId}&redirect_url=${callbackURL}`;
 
     const history = useHistory();

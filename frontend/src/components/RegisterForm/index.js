@@ -18,7 +18,8 @@ export default function RegisterForm() {
     const code = searchParams.get("code");
 
     const getAccessToken = async (code) => {
-        const { data } = await axios.post("http://127.0.0.1:5000/auth", { code });
+        const url = process.env.REACT_APP_BE_HOST;
+        const { data } = await axios.post(`${url}/auth`, { code });
         const { accessToken, userInfomation } = data;
         setAccessToken(accessToken);
     }
