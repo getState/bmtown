@@ -191,7 +191,7 @@ export default function Videos(props){
 
 const pc_config = {
     "iceServers": [{
-        urls : 'stun:localhost.com:5000'
+        urls : 'stun:stun.l.google.com:19302'
     }]
 }
     

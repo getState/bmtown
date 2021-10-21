@@ -14,7 +14,7 @@ const cors=require("cors");
 connect();
 
 const corsOption = {
-  origin: ["http://localhost:3000","http://127.0.0.1:3000","http://101.101.216.132:3000"],
+origin: "*",
   credentials: true
 }
 
