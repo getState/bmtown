@@ -4,6 +4,7 @@ import { myLocation, otherLocations } from '../../store/locations';
 import { userAtom } from '../../store/user';
 import { Canvas, Div } from './style';
 import { drawMyAvatar, drawOtherAvatars, Interval, isCollision } from './utils';
+import Videos from "../VideoList";
 
 
 export default function TownMain(props) {
@@ -11,7 +12,9 @@ export default function TownMain(props) {
     const [location, setLocation] = useRecoilState(myLocation);
     const [otherLocation,setOtherLocation] = useRecoilState(otherLocations);
     const user = useRecoilValue(userAtom);
-    
+    const videoShow = props.videoShow;
+    const socketRef = props.socketRef;
+
     const mapImg = new Image();
     mapImg.src = "/map.png";
     
@@ -72,10 +75,9 @@ export default function TownMain(props) {
             document.removeEventListener("keydown", move);
         }
     }, [draw]);
-
-
     return (
         <Div>
+            {videoShow && <Videos socketRef={socketRef}/>}
             <Canvas
                 width={window.innerWidth}
                 height={window.innerHeight}

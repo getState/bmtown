@@ -7,11 +7,11 @@ import SideBar from "../SideBar";
 
 export default function SideContainer(props) {
     const [selectedBar, setSelectedBar] = useState("notSelected");
-    const [messageList,setMessageList] = useRecoilState(chatList);
+    const setVideoShow = props.setVideoShow;
     const sendMessage = props.sendSocket;
     return (
         <>
-            <SideBar setSelectedBar={setSelectedBar}/>
+            <SideBar setVideoShow={setVideoShow} setSelectedBar={setSelectedBar}/>
             {(selectedBar === "chat" && <Chat sendMessage={sendMessage} setSelectedBar={setSelectedBar}/>)}
         </>
     );
