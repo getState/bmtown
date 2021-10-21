@@ -1,9 +1,9 @@
 import React, { useRef, useEffect, useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
-import { useSocket } from '../../hooks/useSocket';
 import { myLocation, otherLocations } from '../../store/locations';
 import { userAtom } from '../../store/user';
+import Videos from '../VideoList';
 
 const direction = {
     "down": 32,
@@ -12,6 +12,7 @@ const direction = {
     "up": 224
 }
 const Div = styled.div`
+    position: relative;
     height: 100vh;
     max-height: 100vh;
     flex-grow: 1;
@@ -30,6 +31,8 @@ export default function TownMain(props) {
     const [location, setLocation] = useRecoilState(myLocation);
     const [otherLocation,setOtherLocation] = useRecoilState(otherLocations);
     const user = useRecoilValue(userAtom);
+    const videoShow = props.videoShow;
+    const socketRef = props.socketRef;
 
     const mapImg = new Image();
     const characterImg = new Image();
@@ -96,10 +99,9 @@ export default function TownMain(props) {
             document.removeEventListener("keydown", move);
         }
     }, [draw]);
-
-
     return (
         <Div>
+            {videoShow && <Videos socketRef={socketRef}/>}
             <Canvas
                 // width={window.innerWidth}
                 // height={window.innerHeight-1}
