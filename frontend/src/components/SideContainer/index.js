@@ -1,7 +1,4 @@
 import React, {useState} from "react";
-import { useRecoilState } from "recoil";
-import { useSocket } from "../../hooks/useSocket";
-import { chatList } from "../../store/chat";
 import Chat from "../Chat";
 import SideBar from "../SideBar";
 

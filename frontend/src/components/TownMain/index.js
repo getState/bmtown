@@ -37,15 +37,17 @@ export default function TownMain(props) {
 
     const move = (event) => {
         const toggle = location.toggle;
-
+        let speed = 2;
+        if (event.shiftKey)
+            speed = 8;
         if (event.key === "ArrowDown" && !isCollision(user,{x:location.x, y:location.y+4},otherLocation)) 
-            setLocation({ x: location.x, y: location.y + 2 , direction: "down", avatar: location.avatar,toggle:(toggle+1)%Interval});
+            setLocation({ x: location.x, y: location.y + speed , direction: "down", avatar: location.avatar,toggle:(toggle+1)%Interval});
         else if (event.key === "ArrowUp"&& !isCollision(user,{x:location.x, y:location.y-4},otherLocation)) 
-            setLocation({ x: location.x, y: location.y - 2 , direction: "up", avatar: location.avatar,toggle:(toggle+1)%Interval});
+            setLocation({ x: location.x, y: location.y - speed , direction: "up", avatar: location.avatar,toggle:(toggle+1)%Interval});
         else if (event.key === "ArrowRight"&& !isCollision(user,{x:location.x+4, y:location.y},otherLocation)) 
-            setLocation({ x: location.x + 2, y: location.y , direction: "right", avatar: location.avatar,toggle:(toggle+1)%Interval});
+            setLocation({ x: location.x + speed, y: location.y , direction: "right", avatar: location.avatar,toggle:(toggle+1)%Interval});
         else if (event.key === "ArrowLeft"&& !isCollision(user,{x:location.x-4, y:location.y},otherLocation)) 
-            setLocation({ x: location.x - 2, y: location.y , direction: "left", avatar: location.avatar,toggle:(toggle+1)%Interval});
+            setLocation({ x: location.x - speed, y: location.y , direction: "left", avatar: location.avatar,toggle:(toggle+1)%Interval});
 
         sendLocation({ nickname: user.nickname,  type: "move" ,...location});
         document.addEventListener("keyup",stopMove,{once: true})
