@@ -1,6 +1,6 @@
 export default function secretKey() {
     return {
-        secretKey: "SECRET-KEY",
+        secretKey: process.env.JWT_SECRET,
         option: {
             expiresIn: "30m",
             issuer: "J25A"

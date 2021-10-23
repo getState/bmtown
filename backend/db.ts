@@ -1,11 +1,8 @@
 const mongoose = require("mongoose");
 
-import { Document, model, Model, Schema } from "mongoose";
-
-
 
 const DatabaseURL = () => {
-    return `mongodb://27.96.135.47:27017/test`
+    return process.env.DB_HOST
 }
 
 export const connect = () => {

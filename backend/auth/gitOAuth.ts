@@ -2,8 +2,8 @@ import axios from "axios";
 import { URLSearchParams } from "url";
 
 export async function getAccessToken(code) {
-    const cliendId = '0a0df7aa812c963d01ee';
-    const secret = '88cc8e6f85330ae5c0ff3e3c3f6cd0937c245ade';
+    const cliendId = process.env.CLIENT_ID;
+    const secret = process.env.SECRET;
 
     const TOKEN_URL = `https://github.com/login/oauth/access_token?client_id=${cliendId}&client_secret=${secret}&code=${code}`;
     const data : any = (await axios.post(TOKEN_URL)).data;

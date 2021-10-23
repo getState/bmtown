@@ -8,7 +8,7 @@ export const Container = styled.main`
     align-items: center;
     min-width: 720px;
     height: 100vh;
-    background-image: url("bg.png");
+    background-image: url("/bg.png");
 `
 
 export const LogoLink = styled(Link)`

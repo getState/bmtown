@@ -1,18 +1,25 @@
-import React from 'react';
-import { useState, useEffect } from "react";
-import axios from 'axios';
-import { Form, Input, LoginButton, SignupButton} from './style';
+import React,{ useState } from 'react';
+import { useHistory } from 'react-router';
+import {useRecoilState} from 'recoil';
+import { fetchLogin } from "../../hooks/useLogin";
+import { Div, Input, LoginButton, SignupButton} from './style';
+import { Modal } from '../Modal';
+import { userAtom } from '../../store/user';
   
 
 export default function LoginForm() {
-    const cliendId = '0a0df7aa812c963d01ee';
-    const callbackURL = `http://127.0.0.1:3000/auth/callback`;
+    const cliendId = process.env.REACT_APP_CLIENT_ID;
+    const callbackURL = process.env.REACT_APP_CALL_BACK;
     const url = `https://github.com/login/oauth/authorize?client_id=${cliendId}&redirect_url=${callbackURL}`;
 
+    const history = useHistory();
+    
     const [userId, setUserId] = useState('');
+    const [loginFail, setLoginFail] = useState(false);
+    const [user, setUser] = useRecoilState(userAtom);
 
     return (
-        <div>
+        <Div>
             <Input
                 type="text"
                 placeholder="아이디를 입력하세요."
@@ -21,7 +28,10 @@ export default function LoginForm() {
             />
             
             <LoginButton
-                onClick={()=>{doLogin(userId)}}
+                onClick={async () => {
+                    const result=await fetchLogin(userId,setUser, history)
+                    setLoginFail(!result)
+                }}
             >
                 로그인
             </LoginButton>
@@ -29,17 +39,13 @@ export default function LoginForm() {
             <SignupButton href={url}>
                 회원가입
             </SignupButton>
-        </div>
+
+            <Modal
+                message="존재하지 않는 ID입니다."
+                visible={loginFail}
+                callback={() => { setLoginFail(false) }}
+            />
+        </Div>
     );
 }
 
-const doLogin =async  (userId) => {
-    const { userInfo, token } = (await axios.get(`http://127.0.0.1:5000/user/?userId=${userId}`)).data;
-     
-    if (userInfo !== null) {
-        console.log("로그인 성공!");
-    }
-    else {
-        console.log("로그인 실패!");
-    }
-}

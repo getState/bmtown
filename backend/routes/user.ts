@@ -14,6 +14,7 @@ userRouter.get("/", async (req, res, next) => {
     const userInfo = await getUserbyUserId(userId);
     if (userInfo !== null) {
         const newToken = await tokenGenerator(userInfo);
+        res.cookie("token", newToken, { maxAge: 10000 });
         res.status(200).json({ userInfo, token: newToken });
     }
     else {
